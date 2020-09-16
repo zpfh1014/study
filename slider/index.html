@@ -9,8 +9,268 @@
 <meta property="og:description" content="">
 <meta property="og:image" content="">
 <meta property="og:url" content="">
+<title>슬라이드 만들기</title>
+<style>
+/* reset */
+html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select{padding:0; margin:0;}
+body{font-family:'NotoSans', '돋움', Dotum, '굴림', Gulim, Helvetica, sans-serif; color:#666;font-weight:400;line-height:1; -webkit-text-size-adjust:none; -ms-overflow-x:hidden;}
+html,body{font-size:16px;}
+h1, h2, h3, h4, h5, h6, strong{font-size:100%;line-height:1;}
+select, button, input, textarea{font-family:'NotoSans', '돋움', Dotum, '굴림', Gulim, Helvetica, sans-serif;font-size:16px;color:#666;}
+fieldset, img, button{border:0;}
+img, input, button{vertical-align:top;}
+table{table-layout:fixed;width:100%;border-collapse:collapse;border-spacing:0;word-break: break-all;word-wrap: break-word;}
+address, em{font-style:normal;}
+ol, ul, li{list-style:none;}
+hr{display:none;}
+a{text-decoration:none; color:inherit;}
+a:hover, a:active{text-decoration:none;}
+legend{position:absolute; left:-9999px; top:0}
+caption{overflow:hidden; width:0; height:0; font-size:0; line-height:0;}
+button{background:none;cursor:pointer;-webkit-apperance:none;}
+button::-moz-focus-inner{padding:0; border:0;}
+textarea{resize: none;}
+:focus {outline: 0;}
+* {box-sizing:border-box;}
+.blind {position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display: block;}
+
+select{border:1px solid #d2d2d2; border-radius: 0; background: url("/resource/kr/images/common/bg_select.png") right 18px center no-repeat;-webkit-appearance:none;-moz-appearance:none;appearance:none;}
+select::-ms-expand {display: none;}/* select arrow none */
+select:focus{ border:1px solid #1c1c1c;}
+
+input[type="text"],input[type="password"],input[type="number"],input[type="tel"],input[type="email"],input[type="button"],input[type="submit"],textarea {
+   border-radius:0 !important;-webkit-appearance: none;-moz-appearance: none;
+}
+input::placeholder,textarea::placeholder{color:#999;}
+
+
+#wrap{width:100%;height:100%;}
+.slider_wrap{overflow:hidden;width:100%;margin:30px auto;}
+.slider_wrap h1{margin:10px 0;}
+
+#sliderWrap1 .slider{overflow:hidden;width:100%;height:150px;}
+#sliderWrap1 .slider li{float:left;width:100%;height:150px;text-align:center;box-sizing: border-box;transition: all .5s ease-in-out;}
+#sliderWrap1 .slider li.slide1,
+#sliderWrap1 .slider li.slide3{background-color:#ccc;}
+#sliderWrap1 .slider li.slide2,
+#sliderWrap1 .slider li.slide4{background-color:#222;}
+
+#sliderWrap1 .btn_wrap{margin-top:30px;}
+#sliderWrap1 .btn_wrap button{padding:5px;border:1px solid #ccc;}
+
+
+#sliderWrap2 .slider_box{overflow:hidden;width:250px;}
+#sliderWrap2 .slide_list{overflow:hidden;width:1000px;height:150px;}
+#sliderWrap2 .slide_list li{float:left;width:250px;height:150px;text-align:center;box-sizing: border-box;}
+#sliderWrap2 .slide_list li.slide1,
+#sliderWrap2 .slide_list li.slide3{background-color:#ccc;}
+#sliderWrap2 .slide_list li.slide2,
+#sliderWrap2 .slide_list li.slide4{background-color:#222;}
+
+#sliderWrap2 .btn_wrap{margin-top:30px;}
+#sliderWrap2 .btn_wrap button{padding:5px;border:1px solid #ccc;}
+
+
+</style>
 </head>
 <body>
-test
+<!-- wrap -->
+<div id="wrap">
+    <div id="sliderWrap1" class="slider_wrap">
+        <h1>기본</h1>
+        <ul class="slider">
+            <li class="slide1">slide 1</li>
+            <li class="slide2">slide 2</li>
+            <li class="slide3">slide 3</li>
+            <li class="slide4">slide 4</li>
+        </ul>
+        <div class="btn_wrap">
+            <button type="button" class="btn_prev">이전</button>
+            <button type="button" class="btn_next">다음</button>
+        </div>
+    </div>
+
+    <div id="sliderWrap2" class="slider_wrap">
+        <h1>기본2</h1>
+        <div class="slider_box">
+            <ul class="slide_list">
+                <li class="slide1">slide 1</li>
+                <li class="slide2">slide 2</li>
+                <li class="slide3">slide 3</li>
+                <li class="slide4">slide 4</li>
+            </ul>
+        </div>
+        <div class="btn_wrap">
+            <button type="button" class="btn_prev">이전</button>
+            <button type="button" class="btn_next">다음</button>
+        </div>
+    </div>
+</div>
+<!-- //wrap -->    
+
+<script type="text/javascript" src="../lib/jquery-3.4.1.min.js"></script>
+<script>
+var $btnPrev1 = $('#sliderWrap1 .btn_prev');
+var $btnNext1 = $('#sliderWrap1 .btn_next');
+var $slideList1 = $('#sliderWrap1 .slider');
+var $slideItem1 = $slideList1.children();
+var w = $slideList1.width() / show;
+var l = $slideItem1.length;
+var show = 1; // slide 활성화 갯수
+
+$slideList1.width(w * l)
+$slideItem1.width(w);
+
+$btnPrev1.on('click', function(){
+    prev1();
+})
+
+$btnNext1.on('click', function(){
+    next1();
+})
+function prev1() {
+    $slideList1.stop().animate({
+        'left': w * show
+    }, 500, function(){
+        $slideList1.children('li:last').prependTo($slideList1);
+        $slideList1.css({'left':-w * show});
+    }) 
+}
+function next1() {
+    $slideList1.stop().animate({
+        'left':-(w * show)
+        }, 500, function(){
+        $slideList1.children('li:first').appendTo($slideList1);
+        $slideList1.css({'left':-w * show});
+    })
+}
+
+
+
+var $btnPrev2 = $('#sliderWrap2 .btn_prev');
+var $btnNext2 = $('#sliderWrap2 .btn_next');
+var $slideList2 = $('#sliderWrap2 .slide_list');
+var $slideItem2 = $slideList2.children();
+//var w = $slideList.width() / show;
+//var show = 1; // slide 활성화 갯수
+
+var slideW = $slideItem2.width();
+var slideLen = $slideItem2.length;
+var curIndex = 0;
+var curSlide = 0;
+var speed = 500;
+var startNum = 0;
+
+// slide list width
+$slideList2.width(slideW * (slideLen + 2))
+
+function init(){
+    // clone
+    var firstChild = $slideList2.find("li:first-child");
+    var lastChild = $slideList2.find("li:last-child");
+    firstChild.clone().appendTo($slideList2);
+    lastChild.clone().prependTo($slideList2);
+
+    $slideList2.css({
+        "transform" : "translate3d(-"+ (slideW * (startNum + 1))+"px, 0px, 0px)"
+    });
+
+    curIndex = startNum;
+    curSlide = curIndex
+    $slideItem2.eq(curSlide).addClass("slide-active");
+
+}
+init();
+
+
+$btnPrev2.on('click', function(){
+    prev2();
+})
+
+$btnNext2.on('click', function(){
+    next2();
+})
+function prev2() {
+    if(curIndex >= 0){
+        $slideList2.css({
+            "transition" : speed + "ms",
+            "transform" : "translate3d(-"+ (slideW * curIndex)+"px, 0px, 0px)"
+        });
+    }
+    if(curIndex === 0){
+        setTimeout(function(){
+            $slideList2.css({
+                "transition" : "0ms",
+                "transform" : "translate3d(-"+ (slideW * slideLen) +"px, 0px, 0px)"
+            });
+        }, speed);
+        curIndex = slideLen;
+    }
+    
+    $slideItem2.eq(curSlide).removeClass("slide-active");
+    curSlide = --curIndex;
+    $slideItem2.eq(curSlide).addClass("slide-active");
+}
+
+function next2() {
+    if(curIndex <= slideLen - 1){
+        $slideList2.css({
+            "transition" : speed + "ms",
+            "transform" : "translate3d(-"+ (slideW * (curIndex + 2))+"px, 0px, 0px)"
+        });
+    }
+    if(curIndex === slideLen - 1){
+        setTimeout(function(){
+            $slideList2.css({
+                "transition" : "0ms",
+                "transform" : "translate3d(-"+ slideW +"px, 0px, 0px)"
+            });
+        }, speed);
+        curIndex = -1;
+    }
+    
+    $slideItem2.eq(curSlide).removeClass("slide-active");
+    curSlide = ++curIndex;
+    $slideItem2.eq(curSlide).addClass("slide-active");
+}
+
+
+
+
+// $(document).ready(function () {
+//     //you can set this, as long as it's not greater than the slides length
+//     var show = 4;
+//     //calculate each slides width depending on how many you want to show
+//     var w = $('#slider').width() / show;
+//     var l = $('.slide').length;
+    
+//     //set each slide width
+//     $('.slide').width(w);
+//     //set the container width to fix the animation and make it look sliding
+//     $('#slide-container').width(w * l)
+    
+//     function slider() {
+//         $('.slide:first-child').animate({
+//             marginLeft: -w //hide the first slide on the left
+//         }, 'slow', function () {
+//             //once completely hidden, move this slide next to the last slide
+//             $(this).appendTo($(this).parent()).css({marginLeft: 0});
+//         });
+//     }
+//     //use setInterval to do the timed execution and animation
+//     var timer = setInterval(slider, 2000);
+    
+//     /* pausing the slider */   
+//     $('#slider').hover(function(){
+//         //mouse in, clearinterval to pause
+//         clearInterval(timer);
+//     },function(){
+//         //mouse out, setinterval to continue
+//         timer = setInterval(slider, 2000);
+//     });
+// });
+</script>    
 </body>
 </html>
