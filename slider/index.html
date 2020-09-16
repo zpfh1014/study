@@ -60,7 +60,7 @@ input::placeholder,textarea::placeholder{color:#999;}
 #sliderWrap1 .btn_wrap{margin-top:30px;}
 #sliderWrap1 .btn_wrap button{padding:5px;border:1px solid #ccc;}
 
-
+#sliderWrap2{width:250px;}
 #sliderWrap2 .slider_box{overflow:hidden;width:250px;}
 #sliderWrap2 .slide_list{overflow:hidden;width:1000px;height:150px;}
 #sliderWrap2 .slide_list li{float:left;width:250px;height:150px;text-align:center;box-sizing: border-box;}
@@ -72,14 +72,16 @@ input::placeholder,textarea::placeholder{color:#999;}
 #sliderWrap2 .btn_wrap{margin-top:30px;}
 #sliderWrap2 .btn_wrap button{padding:5px;border:1px solid #ccc;}
 
-
+#sliderWrap2 .paging{width:100%;margin:20px 0;text-align:center;}
+#sliderWrap2 .paging .dot{display:inline-block;padding:0 5px;color:#666;}
+#sliderWrap2 .paging .dot.on{color:#000;font-weight: 600;}
 </style>
 </head>
 <body>
 <!-- wrap -->
 <div id="wrap">
-    <div id="sliderWrap1" class="slider_wrap">
-        <h1>기본</h1>
+    <!-- <div id="sliderWrap1" class="slider_wrap">
+        <h1>slide</h1>
         <ul class="slider">
             <li class="slide1">slide 1</li>
             <li class="slide2">slide 2</li>
@@ -90,10 +92,11 @@ input::placeholder,textarea::placeholder{color:#999;}
             <button type="button" class="btn_prev">이전</button>
             <button type="button" class="btn_next">다음</button>
         </div>
-    </div>
+    </div> -->
 
     <div id="sliderWrap2" class="slider_wrap">
-        <h1>기본2</h1>
+        <h1>slide type1</h1>
+        <!-- slider_box -->
         <div class="slider_box">
             <ul class="slide_list">
                 <li class="slide1">slide 1</li>
@@ -102,50 +105,61 @@ input::placeholder,textarea::placeholder{color:#999;}
                 <li class="slide4">slide 4</li>
             </ul>
         </div>
+        <!-- //slider_box -->   
+
+        <!-- paging -->  
+        <div class="paging"></div>
+        <!-- //paging -->    
+
+        <!-- btn_wrap -->   
         <div class="btn_wrap">
             <button type="button" class="btn_prev">이전</button>
             <button type="button" class="btn_next">다음</button>
         </div>
+        <!-- // btn_wrap -->   
     </div>
 </div>
 <!-- //wrap -->    
 
 <script type="text/javascript" src="../lib/jquery-3.4.1.min.js"></script>
 <script>
-var $btnPrev1 = $('#sliderWrap1 .btn_prev');
-var $btnNext1 = $('#sliderWrap1 .btn_next');
-var $slideList1 = $('#sliderWrap1 .slider');
-var $slideItem1 = $slideList1.children();
-var w = $slideList1.width() / show;
-var l = $slideItem1.length;
-var show = 1; // slide 활성화 갯수
+// var $btnPrev1 = $('#sliderWrap1 .btn_prev');
+// var $btnNext1 = $('#sliderWrap1 .btn_next');
+// var $slideList1 = $('#sliderWrap1 .slider');
+// var $slideItem1 = $slideList1.children();
+// var w = $slideList1.width() / show;
+// var l = $slideItem1.length;
+// var show = 1; // slide 활성화 갯수
+// var speed = 500;
 
-$slideList1.width(w * l)
-$slideItem1.width(w);
+// $slideList1.width(w * l)
+// $slideItem1.width(w);
 
-$btnPrev1.on('click', function(){
-    prev1();
-})
+// $btnPrev1.on('click', function(){
+//     prev1();
+// })
 
-$btnNext1.on('click', function(){
-    next1();
-})
-function prev1() {
-    $slideList1.stop().animate({
-        'left': w * show
-    }, 500, function(){
-        $slideList1.children('li:last').prependTo($slideList1);
-        $slideList1.css({'left':-w * show});
-    }) 
-}
-function next1() {
-    $slideList1.stop().animate({
-        'left':-(w * show)
-        }, 500, function(){
-        $slideList1.children('li:first').appendTo($slideList1);
-        $slideList1.css({'left':-w * show});
-    })
-}
+// $btnNext1.on('click', function(){
+//     next1();
+// })
+// function prev1() {
+//     $slideList1.stop().animate({
+//         'left': w * show,
+//         "transition" : speed + "ms"
+//     }, 500, function(){
+//         $slideList1.children('li:last').prependTo($slideList1);
+//         $slideList1.css({'left':-w * show});
+//     }) 
+// }
+// function next1() {
+//     $slideList1.stop().animate({
+//         'left':-(w * show),
+//         "transition" : speed + "ms"
+//         }, 500, function(){
+//         $slideList1.children('li:first').appendTo($slideList1);
+//         $slideList1.css({'left':-w * show});
+//     })
+// }
 
 
 
@@ -154,7 +168,7 @@ var $btnNext2 = $('#sliderWrap2 .btn_next');
 var $slideList2 = $('#sliderWrap2 .slide_list');
 var $slideItem2 = $slideList2.children();
 //var w = $slideList.width() / show;
-//var show = 1; // slide 활성화 갯수
+
 
 var slideW = $slideItem2.width();
 var slideLen = $slideItem2.length;
@@ -162,36 +176,20 @@ var curIndex = 0;
 var curSlide = 0;
 var speed = 500;
 var startNum = 0;
+var show = 1; // show  갯수
+var $paging = $(".paging");
+
 
 // slide list width
 $slideList2.width(slideW * (slideLen + 2))
-
-function init(){
-    // clone
-    var firstChild = $slideList2.find("li:first-child");
-    var lastChild = $slideList2.find("li:last-child");
-    firstChild.clone().appendTo($slideList2);
-    lastChild.clone().prependTo($slideList2);
-
-    $slideList2.css({
-        "transform" : "translate3d(-"+ (slideW * (startNum + 1))+"px, 0px, 0px)"
-    });
-
-    curIndex = startNum;
-    curSlide = curIndex
-    $slideItem2.eq(curSlide).addClass("slide-active");
-
-}
-init();
+// clone copy
+var firstChild = $slideList2.find("li:first-child");
+var lastChild = $slideList2.find("li:last-child");
+firstChild.clone().appendTo($slideList2);
+lastChild.clone().prependTo($slideList2);
 
 
-$btnPrev2.on('click', function(){
-    prev2();
-})
-
-$btnNext2.on('click', function(){
-    next2();
-})
+// prev
 function prev2() {
     if(curIndex >= 0){
         $slideList2.css({
@@ -210,10 +208,13 @@ function prev2() {
     }
     
     $slideItem2.eq(curSlide).removeClass("slide-active");
+    $dot.eq(curSlide).attr("data-idx", curSlide).removeClass("on");
     curSlide = --curIndex;
     $slideItem2.eq(curSlide).addClass("slide-active");
+    $dot.eq(curSlide).attr("data-idx", curSlide).addClass("on");
 }
 
+// next
 function next2() {
     if(curIndex <= slideLen - 1){
         $slideList2.css({
@@ -230,47 +231,69 @@ function next2() {
         }, speed);
         curIndex = -1;
     }
-    
+
     $slideItem2.eq(curSlide).removeClass("slide-active");
+    $dot.eq(curSlide).attr("data-idx", curSlide).removeClass("on");
     curSlide = ++curIndex;
     $slideItem2.eq(curSlide).addClass("slide-active");
+    $dot.eq(curSlide).attr("data-idx", curSlide).addClass("on");
+
 }
 
+// paging
+function paging(){
+    var $paging = $("#sliderWrap2 .paging");
+    var pageChild = "";
+
+    for (var i = 0; i < slideLen; i++) {
+        pageChild += '<div class="dot';
+        pageChild += (i === startNum) ? ' on' : '';
+        pageChild += '" data-idx="' + i + '"><a href="#">'+(i+1)+'</a></div>';
+    }
+    $paging.prepend(pageChild);
+    $dot = $paging.children(".dot");
+    
+}
+
+function init(){
+    $slideList2.css({
+        "transform" : "translate3d(-"+ (slideW * (startNum + 1))+"px, 0px, 0px)"
+    });
+
+    curIndex = startNum;
+    curSlide = curIndex
+    $slideItem2.eq(curSlide).addClass("slide-active");
+
+    paging();
+
+}
+init();
 
 
+$btnPrev2.on('click', function(){
+    prev2();
+})
+$btnNext2.on('click', function(){
+    next2();
+})
 
-// $(document).ready(function () {
-//     //you can set this, as long as it's not greater than the slides length
-//     var show = 4;
-//     //calculate each slides width depending on how many you want to show
-//     var w = $('#slider').width() / show;
-//     var l = $('.slide').length;
-    
-//     //set each slide width
-//     $('.slide').width(w);
-//     //set the container width to fix the animation and make it look sliding
-//     $('#slide-container').width(w * l)
-    
-//     function slider() {
-//         $('.slide:first-child').animate({
-//             marginLeft: -w //hide the first slide on the left
-//         }, 'slow', function () {
-//             //once completely hidden, move this slide next to the last slide
-//             $(this).appendTo($(this).parent()).css({marginLeft: 0});
-//         });
-//     }
-//     //use setInterval to do the timed execution and animation
-//     var timer = setInterval(slider, 2000);
-    
-//     /* pausing the slider */   
-//     $('#slider').hover(function(){
-//         //mouse in, clearinterval to pause
-//         clearInterval(timer);
-//     },function(){
-//         //mouse out, setinterval to continue
-//         timer = setInterval(slider, 2000);
-//     });
-// });
+$dot.on("click", function(){
+    $dot.removeClass("on");
+    $(this).addClass("on");
+
+    $slideItem2.removeClass("slide-active");
+    curIndex = Number($(this).attr("data-idx"));
+    curSlide = curIndex;
+    $slideItem2.eq(curSlide).addClass("slide-active");
+
+    $slideList2.css({
+        "transition" : speed + "ms",
+        "transform" : "translate3d(-"+ (slideW * (curIndex + 1))+"px, 0px, 0px)"
+    });
+
+});
+
+
 </script>    
 </body>
 </html>
