@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta property="og:type" content="website">
+<meta property="og:title" content="">
+<meta property="og:description" content="">
+<meta property="og:image" content="">
+<meta property="og:url" content="">
+<title>슬라이드 plugin 만들기</title>
+<style>
+/* reset */
+html, body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select{padding:0; margin:0;}
+body{font-family:'NotoSans', '돋움', Dotum, '굴림', Gulim, Helvetica, sans-serif; color:#666;font-weight:400;line-height:1; -webkit-text-size-adjust:none; -ms-overflow-x:hidden;}
+html,body{font-size:16px;}
+h1, h2, h3, h4, h5, h6, strong{font-size:100%;line-height:1;}
+select, button, input, textarea{font-family:'NotoSans', '돋움', Dotum, '굴림', Gulim, Helvetica, sans-serif;font-size:16px;color:#666;}
+fieldset, img, button{border:0;}
+img, input, button{vertical-align:top;}
+table{table-layout:fixed;width:100%;border-collapse:collapse;border-spacing:0;word-break: break-all;word-wrap: break-word;}
+address, em{font-style:normal;}
+ol, ul, li{list-style:none;}
+hr{display:none;}
+a{text-decoration:none; color:inherit;}
+a:hover, a:active{text-decoration:none;}
+legend{position:absolute; left:-9999px; top:0}
+caption{overflow:hidden; width:0; height:0; font-size:0; line-height:0;}
+button{background:none;cursor:pointer;-webkit-apperance:none;}
+button::-moz-focus-inner{padding:0; border:0;}
+textarea{resize: none;}
+:focus {outline: 0;}
+* {box-sizing:border-box;}
+.blind {position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display: block;}
+
+select{border:1px solid #d2d2d2; border-radius: 0; background: url("/resource/kr/images/common/bg_select.png") right 18px center no-repeat;-webkit-appearance:none;-moz-appearance:none;appearance:none;}
+select::-ms-expand {display: none;}/* select arrow none */
+select:focus{ border:1px solid #1c1c1c;}
+
+input[type="text"],input[type="password"],input[type="number"],input[type="tel"],input[type="email"],input[type="button"],input[type="submit"],textarea {
+   border-radius:0 !important;-webkit-appearance: none;-moz-appearance: none;
+}
+input::placeholder,textarea::placeholder{color:#999;}
+
+
+#wrap{width:100%;height:100%;}
+.slider_wrap{overflow:hidden;width:100%;margin:30px auto;}
+.slider_wrap h1{margin:10px 0;}
+
+#sliderWrap1{width:300px;}
+#sliderWrap1 .slider_box{overflow:hidden;width:300px;}
+#sliderWrap1 .slide_list{overflow:hidden;width:1000px;height:150px;}
+#sliderWrap1 .slide_list li{float:left;width:300px;height:150px;line-height:150px;vertical-align:middle;text-align:center;font-weight:600;box-sizing: border-box;}
+#sliderWrap1 .slide_list li.slide1,
+#sliderWrap1 .slide_list li.slide3{background-color:#ccc;}
+#sliderWrap1 .slide_list li.slide2,
+#sliderWrap1 .slide_list li.slide4{background-color:#222;}
+
+#sliderWrap1 .btn_wrap{margin-top:30px;}
+#sliderWrap1 .btn_wrap button{padding:5px;border:1px solid #ccc;}
+
+#sliderWrap1 .paging{width:100%;margin:20px 0;text-align:center;}
+#sliderWrap1 .paging .dot{display:inline-block;padding:0 5px;color:#666;}
+#sliderWrap1 .paging .dot.on{color:#000;font-weight: 600;}
+</style>
+</head>
+<body>
+<!-- wrap -->
+<div id="wrap">
+    <div id="sliderWrap1" class="slider_wrap">
+        <h1>slide type1</h1>
+        <!-- slider_box -->
+        <div class="slider_box">
+            <ul class="slide_list">
+                <li class="slide1">slide 1</li>
+                <li class="slide2">slide 2</li>
+                <li class="slide3">slide 3</li>
+                <li class="slide4">slide 4</li>
+            </ul>
+        </div>
+        <!-- //slider_box -->   
+
+        <!-- paging -->  
+        <div class="paging"></div>
+        <!-- //paging -->    
+
+        <!-- btn_wrap -->   
+        <div class="btn_wrap">
+            <button type="button" class="btn_prev">이전</button>
+            <button type="button" class="btn_next">다음</button>
+            <button type="button" class="btn_play">자동재생</button>
+            <button type="button" class="btn_stop">일시정지</button>
+        </div>
+        <!-- // btn_wrap -->   
+    </div>
+</div>
+<!-- //wrap -->    
+
+<script type="text/javascript" src="../lib/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="js/mySlide.js"></script>
+<script>
+$("#sliderWrap1").myPlugin({
+    delay : 3000,
+    speed : 500,
+    autoplay : false,
+    //infinite : false,
+
+    // vertical : false,
+    // slidesToShow : 1,
+    // dots : true,
+    // fade: false,
+    
+});
+</script>    
+</body>
+</html>
