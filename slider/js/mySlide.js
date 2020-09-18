@@ -44,7 +44,7 @@
             function prev() {
                 if(curIndex >= 0){
                     $slideList.css({
-                        "transition" : speed + "ms",
+                        "transition" : options.speed + "ms",
                         "transform" : "translate3d(-"+ (slideW * curIndex)+"px, 0px, 0px)"
                     });
                 }
@@ -54,7 +54,7 @@
                             "transition" : "0ms",
                             "transform" : "translate3d(-"+ (slideW * slideLen) +"px, 0px, 0px)"
                         });
-                    }, speed);
+                    }, options.speed);
                     curIndex = slideLen;
                 }
                 
@@ -150,10 +150,10 @@
             init();
             
             
-            $btnPrev.on('click', function(){
+            $btnPrev.clearQueue().on('click', function(){
                 prev();
             })
-            $btnNext.on('click', function(){
+            $btnNext.clearQueue().on('click', function(){
                 next();
             })
             
