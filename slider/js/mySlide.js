@@ -29,7 +29,7 @@
             var speed = 500;
             var startNum = 0; // start idx
             var show = 1; // show  갯수
-            
+            var isActive = false;
             
             // slide list width
             $slideList.width(slideW * (slideLen + 2))
@@ -39,9 +39,15 @@
             firstChild.clone().appendTo($slideList);
             lastChild.clone().prependTo($slideList);
             
-            
+
+
             // btn prev
-            function prev() {
+            function prev() {        
+                if(isActive){
+                    return;
+                 }
+
+                isActive = true;
                 if(curIndex >= 0){
                     $slideList.css({
                         "transition" : options.speed + "ms",
@@ -57,16 +63,27 @@
                     }, options.speed);
                     curIndex = slideLen;
                 }
-                
+
+                // double click stop
+                setTimeout(function(){
+                    isActive = false;
+                }, options.speed);
+
                 $slideItem.eq(curSlide).removeClass("slide-active");
                 $dot.eq(curSlide).attr("data-idx", curSlide).removeClass("on");
                 curSlide = --curIndex;
                 $slideItem.eq(curSlide).addClass("slide-active");
                 $dot.eq(curSlide).attr("data-idx", curSlide).addClass("on");
             }
-            
+
+
             // btn next
             function next() {
+                if(isActive){
+                   return;
+                }
+
+                isActive = true;
                 if(curIndex <= slideLen - 1){
                     $slideList.css({
                         "transition" : options.speed + "ms",
@@ -82,13 +99,18 @@
                     }, options.speed);
                     curIndex = -1;
                 }
-            
+
+                // double click stop
+                setTimeout(function(){
+                    isActive = false;
+                }, options.speed);
+
                 $slideItem.eq(curSlide).removeClass("slide-active");
                 $dot.eq(curSlide).attr("data-idx", curSlide).removeClass("on");
                 curSlide = ++curIndex;
                 $slideItem.eq(curSlide).addClass("slide-active");
                 $dot.eq(curSlide).attr("data-idx", curSlide).addClass("on");
-            
+                    
             }
             
             // paging
@@ -105,7 +127,6 @@
                 $dot = $paging.children(".dot");
                 
             }
-            
 
             // 사용자 options
             var interval = null;
@@ -135,6 +156,7 @@
             }
             autoplay();
 
+
             function init(){
                 $slideList.css({
                     "transform" : "translate3d(-"+ (slideW * (startNum + 1))+"px, 0px, 0px)"
@@ -150,11 +172,11 @@
             init();
             
             
-            $btnPrev.clearQueue().on('click', function(){
-                prev();
+            $btnPrev.on('click', function(){
+                prev();            
             })
-            $btnNext.clearQueue().on('click', function(){
-                next();
+            $btnNext.on('click', function(){         
+                next();             
             })
             
             $dot.on("click", function(){
@@ -167,7 +189,7 @@
                 $slideItem.eq(curSlide).addClass("slide-active");
             
                 $slideList.css({
-                    "transition" : speed + "ms",
+                    "transition" : option.speed + "ms",
                     "transform" : "translate3d(-"+ (slideW * (curIndex + 1))+"px, 0px, 0px)"
                 });
             

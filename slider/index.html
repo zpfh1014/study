@@ -75,6 +75,20 @@ input::placeholder,textarea::placeholder{color:#999;}
 #sliderWrap2 .paging{width:100%;margin:20px 0;text-align:center;}
 #sliderWrap2 .paging .dot{display:inline-block;padding:0 5px;color:#666;}
 #sliderWrap2 .paging .dot.on{color:#000;font-weight: 600;}
+
+
+#sliderWrap3{width:250px;}
+/* #sliderWrap3 .slider_box{overflow:hidden;width:250px;} */
+#sliderWrap3 .slider{position:relative;width:250px;height:150px;}
+#sliderWrap3 .slider .slide{position: absolute;width:250px;height:150px;text-align:center;box-sizing: border-box;transition: 0.6s ease;transform: translate(-100%, 0);}
+#sliderWrap3 .slider .slide.slide1,
+#sliderWrap3 .slider .slide.slide3{background-color:#ccc;}
+#sliderWrap3 .slider .slide.slide2,
+#sliderWrap3 .slider .slide.slide4{background-color:#222;}
+#sliderWrap3 .slider .slide.active{transform: translate(0, 0);}
+#sliderWrap3 .slider .slide.active ~ .slide{transform: translate(100%, 0);}
+
+
 </style>
 </head>
 <body>
@@ -118,11 +132,40 @@ input::placeholder,textarea::placeholder{color:#999;}
         </div>
         <!-- // btn_wrap -->   
     </div>
+
+    <div id="sliderWrap3" class="slider_wrap">
+        <!-- slider_box -->
+        <div class="slider_box">
+            <div class="slider">
+                <div class="slide slide1 active">slide 1</div>
+                <div class="slide slide2">slide 2</div>
+                <div class="slide slide3">slide 3</div>
+                <div class="slide slide4">slide 4</div>
+            </div>
+        </div>
+        <!-- //slider_box -->   
+
+        <!-- paging -->  
+        <div class="paging"></div>
+        <!-- //paging -->    
+
+        <!-- btn_wrap -->   
+        <div class="btn_wrap">
+            <button id="previous">Previous</button>
+            <button id="next">Next</button>
+        </div>
+        <!-- // btn_wrap -->   
+    </div>
+
 </div>
 <!-- //wrap -->    
 
 <script type="text/javascript" src="../lib/jquery-3.4.1.min.js"></script>
 <script>
+
+
+
+
 // var $btnPrev1 = $('#sliderWrap1 .btn_prev');
 // var $btnNext1 = $('#sliderWrap1 .btn_next');
 // var $slideList1 = $('#sliderWrap1 .slider');
@@ -294,6 +337,30 @@ $dot.on("click", function(){
 });
 
 
+// var $btnPrev3 = $('#sliderWrap3 .btn_prev');
+// var $btnNext3 = $('#sliderWrap3 .btn_next');
+// var $slideList3 = $('#sliderWrap3 .slide_list');
+// var $slideItem3 = $slideList3.find("li");
+
+var slides = $('.slide');
+
+slides.first().before(slides.last());
+
+$('button').on('click', function() {
+  slides = $('.slide');
+  var button = $(this);
+  var activeSlide = $('.active');
+  
+  if (button.attr('id') == 'next') {
+    slides.last().after(slides.first());
+    activeSlide.stop().removeClass('active').next('.slide').addClass('active');
+  }
+  
+  if (button.attr('id') == 'previous') {
+    slides.first().before(slides.last());
+    activeSlide.stop().removeClass('active').prev('.slide').addClass('active');
+  }
+});
 </script>    
 </body>
 </html>
